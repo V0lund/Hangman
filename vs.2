@@ -1,0 +1,48 @@
+from random import randint
+
+
+# GLOBAL
+words = ['python', 'java', 'kotlin', 'javascript']
+
+# FUNCTIONS
+def word_choice() -> str:
+    return words[randint(0, 3)]
+
+
+def game_play() -> int:
+    print("H A N G M A N")
+    word = word_choice()
+    word_ls = list(word)
+    word_hidden = ''.join(str('-') for _ in word)
+    word_hidden_ls = list(word_hidden)
+    tries = 8
+
+    while tries > 0 and "-" in word_hidden:
+        print()
+        print(word_hidden)
+        pl_ch = input('Input a letter:')
+        if pl_ch in word_ls:
+            for x in word_ls:
+                if x == pl_ch:
+                    i = word_ls.index(pl_ch)
+                    del word_hidden_ls[i]
+                    word_hidden_ls.insert(i, pl_ch)
+                    del word_ls[i]
+                    word_ls.insert(i, "-")
+                    word_hidden = ''.join(_ for _ in word_hidden_ls)
+        elif pl_ch in word_hidden_ls and pl_ch not in word_ls:
+            tries -= 1
+            print("No improvements")
+        else:
+            tries -= 1
+            print("That letter does not appear in the word")
+    return tries
+
+
+if __name__ == '__main__':
+    g = game_play()
+    if g > 0:
+        print("You guessed the word!")
+        print("You survived")
+    else:
+        print("You lost!")
